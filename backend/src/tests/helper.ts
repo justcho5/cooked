@@ -1,5 +1,5 @@
 import Recipe from "../models/recipe";
-import { RecipeType } from "../models/types";
+import { RecipeType } from "../models/recipe";
 const newRecipe: RecipeType = {
   name: "Bacon-Wrapped Cherries",
   description:
