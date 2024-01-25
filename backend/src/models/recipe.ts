@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-
+// Everything in Mongoose starts with a Schema. Each schema maps to a MongoDB collection and defines the shape of the documents within that collection.
 const recipeSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  description: String,
   servings: {
     type: Number,
     required: true,
@@ -18,6 +17,7 @@ const recipeSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
+  description: String,
   favorite: Boolean,
   tags: [String],
   difficulty: String,
@@ -33,6 +33,7 @@ recipeSchema.set("toJSON", {
   },
 });
 
+// creates a recipe type from recipe schema
 export type RecipeType = mongoose.InferSchemaType<typeof recipeSchema>;
 
 export default mongoose.model("Recipe", recipeSchema);

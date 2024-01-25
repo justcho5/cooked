@@ -1,3 +1,4 @@
+// The handling of environment variables is extracted into a separate utils/config.js file:
 import dotenv from "dotenv";
 dotenv.config();
 

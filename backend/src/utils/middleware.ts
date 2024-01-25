@@ -1,3 +1,4 @@
+// custom middleware
 import logger from "./logger";
 import { NextFunction, Request, Response } from "express";
 
@@ -17,7 +18,6 @@ const unknownEndpoint = (request: Request, response: Response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 
-// eslint-disable-next-line consistent-return
 const errorHandler = (
   error: Error,
   request: Request,

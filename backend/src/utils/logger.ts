@@ -1,3 +1,4 @@
+// printing to console functions
 const info = (...params: string[]) => {
   console.log(...params);
 };

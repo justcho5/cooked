@@ -1,10 +1,7 @@
+// The router is in fact a middleware, that can be used for defining "related routes" in a single place, which is typically placed in its own module.
 import express from "express";
 const recipesRouter = express.Router();
 import Recipe from "../models/recipe";
-
-// recipesRouter.get("/", (req, res) => {
-//   return res.send("Hello world!!!");
-// });
 
 //get /api/recipes get all recipes
 recipesRouter.get("/", async (req, res, next) => {
