@@ -1,2 +1,9 @@
+# dotenv environment variable file
 .env
+
+# Dependency directory
 node_modules
+
+# build output
+dist
+
