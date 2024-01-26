@@ -7,7 +7,7 @@ import Recipe from "../models/recipe";
 recipesRouter.get("/", async (req, res, next) => {
   try {
     const recipes = await Recipe.find({});
-    res.json(recipes);
+    res.status(200).json(recipes);
   } catch (exception) {
     next(exception);
   }
@@ -17,7 +17,11 @@ recipesRouter.get("/", async (req, res, next) => {
 recipesRouter.get("/:id", async (req, res, next) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
-    res.json(recipe);
+    if (recipe) {
+      res.status(200).json(recipe);
+    } else {
+      res.status(404).end();
+    }
   } catch (exception) {
     next(exception);
   }
@@ -47,7 +51,7 @@ recipesRouter.put("/:id", async (req, res, next) => {
         context: "query",
       }
     );
-    res.json(updatedRecipe);
+    res.status(200).json(updatedRecipe);
   } catch (exception) {
     next(exception);
   }

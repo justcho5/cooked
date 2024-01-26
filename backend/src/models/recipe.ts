@@ -27,8 +27,8 @@ const recipeSchema = new mongoose.Schema({
 });
 recipeSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
+    returnedObject._id = returnedObject._id.toString();
+    // delete returnedObject._id;
     delete returnedObject.__v;
   },
 });

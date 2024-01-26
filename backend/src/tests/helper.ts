@@ -71,12 +71,12 @@ const initialRecipes: Array<RecipeType> = [
 ];
 
 const nonExistingId = async () => {
-  const recipe = new Recipe({ content: "willremovethissoon" });
+  const recipe = new Recipe(newRecipe);
   await recipe.save();
   await recipe.deleteOne();
 
   // function to make an id that doesnt exist in the db
-  return recipe._id.toString();
+  return recipe._id;
 };
 
 // fetch all recipes in db
