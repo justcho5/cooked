@@ -1,26 +1,27 @@
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import AllRecipes from "./pages/AllRecipes";
-import recipeService from "./services/recipes";
-import { useEffect, useState } from "react";
-
+import Recipes from "./pages/Recipes";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RecipeDetails from "./pages/RecipeDetails";
+import EditRecipe from "./pages/EditRecipe";
+import Home from "./pages/Home";
 function App() {
-  const [recipes, setRecipes] = useState([]);
-  useEffect(() => {
-    recipeService.getAll().then((response) => {
-      setRecipes(response.data);
-    });
-  }, []);
-  console.log("render", recipes.length, "recipes");
   return (
-    <div className="flex flex-col m-auto min-h-[100vh]">
-      <Header />
-      <div className="flex-grow bg-blue-500">
-        <AllRecipes recipes={recipes} />
+    <BrowserRouter>
+      <div className="flex flex-col m-auto min-h-[100vh]">
+        <Header />
+        <div className="flex-grow bg-blue-500">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/recipes" element={<Recipes />} />
+            <Route path="/recipes/:_id" element={<RecipeDetails />} />
+            <Route path="/recipes/:_id/edit" element={<EditRecipe />} />
+          </Routes>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </BrowserRouter>
   );
 }
 
