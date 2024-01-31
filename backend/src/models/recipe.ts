@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 // Everything in Mongoose starts with a Schema. Each schema maps to a MongoDB collection and defines the shape of the documents within that collection.
 const recipeSchema = new mongoose.Schema({
+  img: {
+    type: String,
+    default: "http://placekitten.com/g/200/300",
+    required: false,
+  },
   name: {
     type: String,
     required: true,
