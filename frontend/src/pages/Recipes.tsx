@@ -18,6 +18,9 @@ function Recipes() {
 
   return (
     <div className="m-[50px]">
+      <Link to={`/recipes/new`}>
+        <button className="border">Add new</button>
+      </Link>
       {recipes.map((recipe) => (
         <div key={recipe._id}>
           <Link to={`/recipes/${recipe._id}`}>

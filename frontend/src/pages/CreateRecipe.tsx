@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import recipeService from "../services/recipes";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Form from "../components/Form";
 export default function CreateRecipe() {
   const navigate = useNavigate();
@@ -19,5 +19,12 @@ export default function CreateRecipe() {
     const createdObject = await recipeService.create(recipeObject);
     navigate(`/recipes/${createdObject._id}`);
   };
-  return <Form onSubmit={onSubmit} form={form} />;
+  return (
+    <div>
+      <Link to={`/recipes`}>
+        <button className="border">View all</button>
+      </Link>
+      <Form onSubmit={onSubmit} form={form} />
+    </div>
+  );
 }
