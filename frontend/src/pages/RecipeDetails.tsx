@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import recipeService from "../services/recipes";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
@@ -47,7 +47,12 @@ function RecipeDetails() {
   return recipe == undefined ? (
     <div>No Recipe</div>
   ) : edit && formData ? (
-    <EditRecipe setState={[setEdit, setRecipe]} formData={formData} />
+    <div>
+      <Link to={`/recipes`}>
+        <button className="border">View all</button>
+      </Link>
+      <EditRecipe setState={[setEdit, setRecipe]} formData={formData} />
+    </div>
   ) : (
     <div className="flex flex-col items-center">
       <h1>{recipe.name}</h1>
@@ -65,6 +70,9 @@ function RecipeDetails() {
         <Button text="Edit" onClick={handleEditClick} />
         <Button text="Delete" onClick={handleDeleteClick} />
       </div>
+      <Link to={`/recipes`}>
+        <button className="border">View all</button>
+      </Link>
     </div>
   );
 }
