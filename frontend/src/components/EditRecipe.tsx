@@ -31,11 +31,10 @@ export default function EditRecipe({
 
   //   const navigate = useNavigate();
   const onSubmit: SubmitHandler<InputType> = async (data) => {
-    console.log(data);
     const recipeObject: RecipeType = {
       name: data.title,
       description: data.description,
-      img: data.img,
+      img: data.img === "" ? "http://placekitten.com/g/200/300" : data.img,
       servings: data.servings,
       ingredients: data.ingredients.map((e) => e.ingredient),
       instructions: data.instructions.map((e) => e.instruction),

@@ -6,15 +6,15 @@ export default function CreateRecipe() {
   const navigate = useNavigate();
   const form = useForm<InputType>({ mode: "onTouched" });
   const onSubmit: SubmitHandler<InputType> = async (data) => {
-    console.log(data);
     const recipeObject: RecipeType = {
       name: data.title,
       description: data.description,
-      img: data.img,
+      img: data.img === "" ? "http://placekitten.com/g/200/300" : data.img,
       servings: data.servings,
       ingredients: data.ingredients.map((e) => e.ingredient),
       instructions: data.instructions.map((e) => e.instruction),
     };
+
     //redirect
     const createdObject = await recipeService.create(recipeObject);
     navigate(`/recipes/${createdObject._id}`);

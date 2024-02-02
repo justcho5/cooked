@@ -53,9 +53,11 @@ function Form({
         Description{" "}
         <textarea {...register("description", { maxLength: 500 })} />
       </label>
+
       <label className="flex flex-col">
         Image <input {...register("img")} />
       </label>
+
       <label className="flex flex-col">
         Servings{" "}
         <input
@@ -133,6 +135,7 @@ function Form({
           ))}
         </ul>
       </div>
+
       <button className="border" type="submit">
         Save
       </button>
