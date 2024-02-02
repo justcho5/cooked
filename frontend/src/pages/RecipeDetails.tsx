@@ -25,7 +25,6 @@ function RecipeDetails() {
       const formDataObject: InputType = {
         title: recipe.name,
         description: recipe.description,
-        img: recipe.img,
         servings: recipe.servings,
         ingredients: recipe.ingredients.map((ingred) => ({
           ingredient: ingred,
@@ -53,7 +52,6 @@ function RecipeDetails() {
     <div className="flex flex-col items-center">
       <h1>{recipe.name}</h1>
       <em>{recipe.description}</em>
-      <img className="w-40 h-40 object-cover" src={recipe.img} />
       <div>{recipe.servings} Servings</div>
       <div>Ingredients:</div>
       {recipe.ingredients.map((ingredient, idx) => (

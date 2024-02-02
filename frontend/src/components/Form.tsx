@@ -55,10 +55,6 @@ function Form({
       </label>
 
       <label className="flex flex-col">
-        Image <input {...register("img")} />
-      </label>
-
-      <label className="flex flex-col">
         Servings{" "}
         <input
           type="number"

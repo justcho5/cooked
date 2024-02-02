@@ -3,14 +3,6 @@ import recipeService from "../services/recipes";
 import { useParams } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import Form from "./Form";
-interface InputType {
-  title: string;
-  description: string;
-  img: string | undefined;
-  servings: number;
-  ingredients: { ingredient: string }[];
-  instructions: { instruction: string }[];
-}
 
 export default function EditRecipe({
   formData,
@@ -34,7 +26,6 @@ export default function EditRecipe({
     const recipeObject: RecipeType = {
       name: data.title,
       description: data.description,
-      img: data.img === "" ? "http://placekitten.com/g/200/300" : data.img,
       servings: data.servings,
       ingredients: data.ingredients.map((e) => e.ingredient),
       instructions: data.instructions.map((e) => e.instruction),
