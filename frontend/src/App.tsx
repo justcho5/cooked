@@ -11,7 +11,7 @@ function App() {
     <BrowserRouter>
       <div className="flex flex-col m-auto min-h-[100vh]">
         <Header />
-        <div className="flex-grow bg-blue-500">
+        <div className="flex-grow flex justify-center">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/recipes" element={<Recipes />} />
