@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import recipeService from "../services/recipes";
 import { useParams } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
-import Form from "../components/Form";
+import Form from "./Form";
 interface InputType {
   title: string;
   description: string;
