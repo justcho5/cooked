@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";
 export default function CreateRecipe() {
   const navigate = useNavigate();
-  const form = useForm<InputType>();
+  const form = useForm<InputType>({ mode: "onTouched" });
   const onSubmit: SubmitHandler<InputType> = async (data) => {
     console.log(data);
     const recipeObject: RecipeType = {

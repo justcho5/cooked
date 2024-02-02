@@ -24,7 +24,10 @@ export default function EditRecipe({
 }) {
   const [setEdit, setRecipe] = setState;
   const { _id } = useParams();
-  const form = useForm<InputType>({ defaultValues: formData });
+  const form = useForm<InputType>({
+    defaultValues: formData,
+    mode: "onTouched",
+  });
 
   //   const navigate = useNavigate();
   const onSubmit: SubmitHandler<InputType> = async (data) => {

@@ -9,7 +9,12 @@ function Form({
   onSubmit: SubmitHandler<InputType>;
   form: UseFormReturn<InputType>;
 }) {
-  const { control, handleSubmit, register } = form;
+  const {
+    control,
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = form;
   const {
     fields: fieldsIngredients,
     append: appendIngredients,
@@ -27,6 +32,7 @@ function Form({
     control,
     name: "instructions",
   });
+
   return (
     <form
       className="flex flex-col gap-5 border w-96 px-5"
@@ -37,9 +43,12 @@ function Form({
         <input
           type="text"
           placeholder="Recipe Title"
-          {...register("title", { required: true })}
+          {...register("title", { required: "This is required" })}
         />
+        {/*not rendering below*/}
+        <p>{errors.title?.message}</p>
       </label>
+
       <label className="flex flex-col">
         Description{" "}
         <textarea {...register("description", { maxLength: 500 })} />
@@ -52,8 +61,9 @@ function Form({
         <input
           type="number"
           placeholder="Servings"
-          {...register("servings", { required: true, min: 1 })}
+          {...register("servings", { required: "This is required", min: 1 })}
         />
+        <p>{errors.servings?.message}</p>
       </label>
 
       <div className="flex flex-col">
@@ -68,20 +78,23 @@ function Form({
         </div>
         <ul className="flex flex-col">
           {fieldsIngredients.map((field, index) => (
-            <li key={field.id} className="flex items-center">
-              <input
-                className="flex-1"
-                placeholder="Enter ingredient"
-                {...register(`ingredients.${index}.ingredient`, {
-                  required: true,
-                })}
-              />
-              <RoundButton
-                icon={faMinus}
-                handleClick={() => {
-                  removeIngredients(index);
-                }}
-              />
+            <li key={field.id}>
+              <div className="flex items-center">
+                <input
+                  className="flex-1"
+                  placeholder="Enter ingredient"
+                  {...register(`ingredients.${index}.ingredient`, {
+                    required: "This is required",
+                  })}
+                />
+                <RoundButton
+                  icon={faMinus}
+                  handleClick={() => {
+                    removeIngredients(index);
+                  }}
+                />
+              </div>
+              <p>{errors.ingredients?.[index]?.ingredient?.message}</p>
             </li>
           ))}
         </ul>
@@ -99,20 +112,23 @@ function Form({
         </div>
         <ul className="flex flex-col">
           {fieldsInstructions.map((field, index) => (
-            <li key={field.id} className="flex items-center">
-              <input
-                className="flex-1"
-                placeholder="Enter instruction"
-                {...register(`instructions.${index}.instruction`, {
-                  required: true,
-                })}
-              />
-              <RoundButton
-                icon={faMinus}
-                handleClick={() => {
-                  removeInstructions(index);
-                }}
-              />
+            <li key={field.id}>
+              <div className="flex items-center">
+                <input
+                  className="flex-1"
+                  placeholder="Enter instruction"
+                  {...register(`instructions.${index}.instruction`, {
+                    required: "This is required",
+                  })}
+                />
+                <RoundButton
+                  icon={faMinus}
+                  handleClick={() => {
+                    removeInstructions(index);
+                  }}
+                />
+              </div>
+              <p>{errors.instructions?.[index]?.instruction?.message}</p>
             </li>
           ))}
         </ul>

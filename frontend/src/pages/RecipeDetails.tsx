@@ -21,6 +21,7 @@ function RecipeDetails() {
   const handleEditClick = () => {
     setEdit(true);
     if (recipe) {
+      //is there a better way to do this because if edit is being clicked there should already be a recipe
       const formDataObject: InputType = {
         title: recipe.name,
         description: recipe.description,
