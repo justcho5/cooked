@@ -10,7 +10,7 @@ function Recipes() {
     const fetchRecipes = async () => {
       const fetchedRecipes = await recipeService.getAll();
 
-      setRecipes(fetchedRecipes);
+      setRecipes(fetchedRecipes.reverse().slice(0, 25));
     };
 
     fetchRecipes();

@@ -1,8 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import recipeService from "../services/recipes";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";
 interface InputType {
   title: string;
@@ -13,34 +12,22 @@ interface InputType {
   instructions: { instruction: string }[];
 }
 
-export default function EditRecipe() {
+export default function EditRecipe({
+  formData,
+  setState,
+}: {
+  formData: InputType;
+  setState: [
+    React.Dispatch<React.SetStateAction<boolean>>,
+    React.Dispatch<React.SetStateAction<RecipeType | undefined>>
+  ];
+}) {
+  const [setEdit, setRecipe] = setState;
   const { _id } = useParams();
-  const form = useForm<InputType>();
+  const form = useForm<InputType>({ defaultValues: formData });
 
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      const fetchedRecipe: RecipeType = await recipeService.get(_id!);
-      const formDataObject = {
-        title: fetchedRecipe.name,
-        description: fetchedRecipe.description,
-        img: fetchedRecipe.img,
-        servings: fetchedRecipe.servings,
-        ingredients: fetchedRecipe.ingredients.map((ingred) => ({
-          ingredient: ingred,
-        })),
-        instructions: fetchedRecipe.instructions.map((instruction) => ({
-          instruction: instruction,
-        })),
-      };
-      console.log(formDataObject);
-      form.reset(formDataObject);
-    };
-
-    fetchRecipe();
-  }, [_id, form]);
-
-  const navigate = useNavigate();
-  const onSubmit: SubmitHandler<InputType> = (data) => {
+  //   const navigate = useNavigate();
+  const onSubmit: SubmitHandler<InputType> = async (data) => {
     console.log(data);
     const recipeObject: RecipeType = {
       name: data.title,
@@ -50,8 +37,9 @@ export default function EditRecipe() {
       ingredients: data.ingredients.map((e) => e.ingredient),
       instructions: data.instructions.map((e) => e.instruction),
     };
-    recipeService.update(_id!, recipeObject);
-    navigate(`/recipes/${_id}`);
+    const updatedRecipe = await recipeService.update(_id!, recipeObject);
+    setRecipe(updatedRecipe);
+    setEdit(false);
   };
   return <Form onSubmit={onSubmit} form={form} />;
 }

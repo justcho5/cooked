@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 import Recipes from "./pages/Recipes";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RecipeDetails from "./pages/RecipeDetails";
-import EditRecipe from "./pages/EditRecipe";
+// import EditRecipe from "./pages/EditRecipe";
 import Home from "./pages/Home";
 import CreateRecipe from "./pages/CreateRecipe";
 function App() {
@@ -17,7 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/recipes/:_id" element={<RecipeDetails />} />
-            <Route path="/recipes/:_id/edit" element={<EditRecipe />} />
+            {/* <Route path="/recipes/:_id/edit" element={<EditRecipe />} /> */}
             <Route path="/recipes/new" element={<CreateRecipe />} />
           </Routes>
         </div>
