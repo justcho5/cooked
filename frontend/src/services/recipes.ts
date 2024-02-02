@@ -7,9 +7,7 @@ const getAll = async () => {
 };
 
 const get = async (id: string) => {
-  console.log(`${baseUrl}/${id}`);
   const response = await axios.get(`${baseUrl}/${id}`);
-  console.log(response.data);
   return response.data;
 };
 
@@ -24,4 +22,9 @@ const update = async (id: string, recipeObject: RecipeType) => {
   return response.data;
 };
 
-export default { getAll, get, create, update };
+const remove = async (id: string) => {
+  const response = await axios.delete(`${baseUrl}/${id}`);
+  return response.data;
+};
+
+export default { getAll, get, create, update, remove };

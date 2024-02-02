@@ -13,3 +13,12 @@ interface RecipeType {
   dateCreated?: Date;
   img?: string;
 }
+
+interface InputType {
+  title: string;
+  description: string;
+  img: string | undefined;
+  servings: number;
+  ingredients: { ingredient: string }[];
+  instructions: { instruction: string }[];
+}
