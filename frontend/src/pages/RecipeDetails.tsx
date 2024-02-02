@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import recipeService from "../services/recipes";
 import { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import EditRecipe from "../components/EditRecipe";
 function RecipeDetails() {
