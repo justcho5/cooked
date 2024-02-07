@@ -1,4 +1,5 @@
 # To run server locally in dev:
+- DM me for env file
 - Run the following commands at the root of /backend:
 - `npm install`
 - `npm run dev`
