@@ -1,3 +1,12 @@
+# To run this code locally in development:
+- Run the following commands at the root of /frontend
+- `npm install`
+- `npm run dev`
+- Go to http://localhost:5173/
+
+
+
+_____________________________________________________________
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
