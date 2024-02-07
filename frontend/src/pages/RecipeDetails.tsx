@@ -1,22 +1,14 @@
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLoaderData } from "react-router-dom";
 import recipeService from "../services/recipes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../components/Button";
 import EditRecipe from "../components/EditRecipe";
 function RecipeDetails() {
-  const [recipe, setRecipe] = useState<RecipeType>();
+  const [recipe, setRecipe] = useState<RecipeType>(
+    useLoaderData() as RecipeType
+  );
   const [edit, setEdit] = useState(false);
   const [formData, setFormData] = useState<InputType>();
-  const { _id } = useParams();
-
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      const recipe = await recipeService.get(_id!);
-
-      setRecipe(recipe);
-    };
-    fetchRecipe();
-  }, [_id]);
 
   const handleEditClick = () => {
     setEdit(true);
@@ -37,9 +29,9 @@ function RecipeDetails() {
     }
   };
   const navigate = useNavigate();
-  const handleDeleteClick = () => {
-    if (_id) {
-      recipeService.remove(_id);
+  const handleDeleteClick = async () => {
+    if (recipe._id) {
+      await recipeService.remove(recipe._id);
       navigate("/recipes");
     }
   };

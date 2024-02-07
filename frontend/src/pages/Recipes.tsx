@@ -1,21 +1,13 @@
 import Card from "../components/Card";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import recipeService from "../services/recipes";
+import { useLoaderData, Link } from "react-router-dom";
 
 function Recipes() {
-  const [recipes, setRecipes] = useState<RecipeType[]>([]);
-
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      const fetchedRecipes = await recipeService.getAll();
-
-      setRecipes(fetchedRecipes.reverse().slice(0, 25));
-    };
-
-    fetchRecipes();
-  }, []);
-
+  // removed useEffect because useEffect should be used for side effects
+  //such as when a certain param changes and not for lifecycle methods
+  //useEffect is a hook in React that allows us to run side effects or
+  //manage state changes after the component has rendered and the DOM has been updated.
+  // instead we use useloaderdata
+  const recipes = useLoaderData() as RecipeType[];
   return (
     <div className="m-[50px]">
       <Link to={`/recipes/new`}>

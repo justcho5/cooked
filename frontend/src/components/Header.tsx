@@ -1,5 +1,7 @@
+import Breadcrumbs from "./Breadcrumbs";
+
 function Header() {
-  return <div className="mx-12">cooked</div>;
+  return <Breadcrumbs />;
 }
 
 export default Header;
