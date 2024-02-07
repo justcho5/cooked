@@ -1,6 +1,7 @@
 # To run this code locally in development:
 - `npm install`
 - `npm run dev`
+- Navigate to http://localhost:5173/
 
 
 
