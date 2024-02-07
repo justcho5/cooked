@@ -1,4 +1,9 @@
-import { useNavigate, Link, useLoaderData } from "react-router-dom";
+import {
+  useNavigate,
+  Link,
+  useLoaderData,
+  useSearchParams,
+} from "react-router-dom";
 import recipeService from "../services/recipes";
 import { useState } from "react";
 import Button from "../components/Button";
@@ -7,26 +12,27 @@ function RecipeDetails() {
   const [recipe, setRecipe] = useState<RecipeType>(
     useLoaderData() as RecipeType
   );
-  const [edit, setEdit] = useState(false);
+  // const [edit, setEdit] = useState(false);
   const [formData, setFormData] = useState<InputType>();
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const edit = searchParams.get("edit");
   const handleEditClick = () => {
-    setEdit(true);
-    if (recipe) {
-      //is there a better way to do this because if edit is being clicked there should already be a recipe
-      const formDataObject: InputType = {
-        title: recipe.name,
-        description: recipe.description,
-        servings: recipe.servings,
-        ingredients: recipe.ingredients.map((ingred) => ({
-          ingredient: ingred,
-        })),
-        instructions: recipe.instructions.map((instruction) => ({
-          instruction: instruction,
-        })),
-      };
-      setFormData(formDataObject);
-    }
+    // setEdit(true);
+    setSearchParams("edit=true");
+
+    //is there a better way to do this because if edit is being clicked there should already be a recipe
+    const formDataObject: InputType = {
+      title: recipe.name,
+      description: recipe.description,
+      servings: recipe.servings,
+      ingredients: recipe.ingredients.map((ingred) => ({
+        ingredient: ingred,
+      })),
+      instructions: recipe.instructions.map((instruction) => ({
+        instruction: instruction,
+      })),
+    };
+    setFormData(formDataObject);
   };
   const navigate = useNavigate();
   const handleDeleteClick = async () => {
@@ -38,12 +44,12 @@ function RecipeDetails() {
 
   return recipe == undefined ? (
     <div>No Recipe</div>
-  ) : edit && formData ? (
+  ) : edit === "true" && formData ? ( //check if user is authorized
     <div>
       <Link to={`/recipes`}>
         <button className="border">View all</button>
       </Link>
-      <EditRecipe setState={[setEdit, setRecipe]} formData={formData} />
+      <EditRecipe setState={setRecipe} formData={formData} />
     </div>
   ) : (
     <div className="flex flex-col items-center">

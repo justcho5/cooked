@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import recipeService from "../services/recipes";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import Form from "./Form";
 
 export default function EditRecipe({
@@ -8,18 +8,15 @@ export default function EditRecipe({
   setState,
 }: {
   formData: InputType;
-  setState: [
-    React.Dispatch<React.SetStateAction<boolean>>,
-    React.Dispatch<React.SetStateAction<RecipeType>>
-  ];
+  setState: React.Dispatch<React.SetStateAction<RecipeType>>;
 }) {
-  const [setEdit, setRecipe] = setState;
+  const setRecipe = setState;
   const { _id } = useParams();
   const form = useForm<InputType>({
     defaultValues: formData,
     mode: "onTouched",
   });
-
+  const [, setSearchParams] = useSearchParams();
   const onSubmit: SubmitHandler<InputType> = async (data) => {
     const recipeObject: RecipeType = {
       name: data.title,
@@ -30,7 +27,8 @@ export default function EditRecipe({
     };
     const updatedRecipe = await recipeService.update(_id!, recipeObject);
     setRecipe(updatedRecipe);
-    setEdit(false);
+    // setEdit(false);
+    setSearchParams("");
   };
   return <Form onSubmit={onSubmit} form={form} />;
 }
