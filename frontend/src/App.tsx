@@ -17,37 +17,46 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: "/", element: <Home /> },
       {
-        path: "/recipes",
-
-        handle: { crumb: () => <Link to="/recipes">recipes</Link> },
+        path: "/",
+        handle: { crumb: () => <Link to={`/`}>cooked&nbsp;</Link> },
         children: [
+          { index: true, element: <Home /> },
           {
-            index: true,
-            loader: async () => {
-              return await recipeService.getAll();
-            },
-            element: <Recipes />,
-          },
-          {
-            path: "/recipes/:_id",
-            element: <RecipeDetails />,
-            loader: async ({ params }) => {
-              return await recipeService.get(params._id!);
-            },
+            path: "/recipes",
             handle: {
-              crumb: (data: RecipeType) => (
-                <Link to={`/recipes/${data._id}`} reloadDocument>
-                  {data.name}
-                </Link>
-              ),
+              crumb: () => <Link to="/recipes">/&nbsp;recipes&nbsp;</Link>,
             },
-          },
-          {
-            path: "/recipes/new",
-            element: <CreateRecipe />,
-            handle: { crumb: () => <Link to="/recipes/new">new</Link> },
+            children: [
+              {
+                index: true,
+                loader: async () => {
+                  return await recipeService.getAll();
+                },
+                element: <Recipes />,
+              },
+              {
+                path: "/recipes/:_id",
+                element: <RecipeDetails />,
+                loader: async ({ params }) => {
+                  return await recipeService.get(params._id!);
+                },
+                handle: {
+                  crumb: (data: RecipeType) => (
+                    <Link to={`/recipes/${data._id}`} reloadDocument>
+                      /&nbsp;{data.name}
+                    </Link>
+                  ),
+                },
+              },
+              {
+                path: "/recipes/new",
+                element: <CreateRecipe />,
+                handle: {
+                  crumb: () => <Link to="/recipes/new">/&nbsp;new</Link>,
+                },
+              },
+            ],
           },
         ],
       },
