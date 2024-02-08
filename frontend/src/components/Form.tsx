@@ -1,20 +1,41 @@
 import RoundButton from "./RoundButton";
-import { UseFormReturn, SubmitHandler, useFieldArray } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import recipeService from "../services/recipes";
+
 function Form({
-  onSubmit,
-  form,
+  recipe,
+  setRecipe,
 }: {
-  onSubmit: SubmitHandler<InputType>;
-  form: UseFormReturn<InputType>;
+  recipe?: RecipeType;
+  setRecipe?: React.Dispatch<React.SetStateAction<RecipeType>>;
 }) {
+  // use the react-hook-forms useForm Hook
   const {
     control,
     handleSubmit,
-    register,
+    register, // method for registering input and apply validation rules to react hook form
     formState: { errors },
-  } = form;
+  } = useForm<InputType>({
+    defaultValues: recipe // if there's a recipe (editing existing recipe), then prefill form
+      ? {
+          title: recipe.name,
+          description: recipe.description,
+          servings: recipe.servings,
+          ingredients: recipe.ingredients.map((ingred) => ({
+            ingredient: ingred,
+          })),
+          instructions: recipe.instructions.map((instruction) => ({
+            instruction: instruction,
+          })),
+        }
+      : {},
+    mode: "onTouched",
+  });
+
+  // Custom hook for dynamic form input (ingredients)
   const {
     fields: fieldsIngredients,
     append: appendIngredients,
@@ -24,6 +45,7 @@ function Form({
     name: "ingredients",
   });
 
+  // Custom hook for dynamic form input (instructions)
   const {
     fields: fieldsInstructions,
     append: appendInstructions,
@@ -33,6 +55,7 @@ function Form({
     name: "instructions",
   });
 
+  // set State and handler image selection and preview
   const [previewImage, setPreviewImage] = useState("");
   const handleSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -45,6 +68,35 @@ function Form({
       fileReader.readAsDataURL(file);
     }
   };
+
+  // useNavigate hook to programmatically navigate
+  const navigate = useNavigate();
+
+  // Submit handler conditionally sends either put or post req
+  const onSubmit: SubmitHandler<InputType> = async (data) => {
+    const recipeObject: RecipeType = {
+      name: data.title,
+      description: data.description,
+      servings: data.servings,
+      ingredients: data.ingredients.map((e) => e.ingredient),
+      instructions: data.instructions.map((e) => e.instruction),
+    };
+
+    if (previewImage.length > 0) {
+      recipeObject.img = previewImage;
+    }
+    if (recipe !== undefined && setRecipe !== undefined) {
+      const returnedObject = await recipeService.update(
+        recipe._id!,
+        recipeObject
+      );
+      setRecipe(returnedObject);
+    } else {
+      const returnedObject = await recipeService.create(recipeObject);
+      navigate(`/recipes/${returnedObject._id}`);
+    }
+  };
+
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
       <label className="flex flex-col">
@@ -54,7 +106,6 @@ function Form({
           placeholder="Recipe Title"
           {...register("title", { required: "This is required" })}
         />
-        {/*not rendering below*/}
         <p>{errors.title?.message}</p>
       </label>
 
@@ -72,8 +123,6 @@ function Form({
           onChange={handleSelectImage}
         />
         {previewImage ? <img src={previewImage} /> : null}
-        {/*not rendering below*/}
-        <p>{errors.img?.message}</p>
       </label>
       <label className="flex flex-col">
         Servings{" "}
