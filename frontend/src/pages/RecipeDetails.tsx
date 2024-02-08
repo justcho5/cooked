@@ -2,37 +2,19 @@ import { useNavigate, useLoaderData, useSearchParams } from "react-router-dom";
 import recipeService from "../services/recipes";
 import { useState } from "react";
 import Button from "../components/Button";
-import EditRecipe from "../components/EditRecipe";
+import Form from "../components/Form";
 import MainContentContainer from "../components/MainContentContainer";
-// import Section from "../components/Section";
+
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<RecipeType>(
     useLoaderData() as RecipeType
   );
-  // const [edit, setEdit] = useState(false);
-  // const [formData, setFormData] = useState<InputType>();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const edit = searchParams.get("edit");
-  const formData: InputType = {
-    title: recipe.name,
-    description: recipe.description,
-    servings: recipe.servings,
-    ingredients: recipe.ingredients.map((ingred) => ({
-      ingredient: ingred,
-    })),
-    instructions: recipe.instructions.map((instruction) => ({
-      instruction: instruction,
-    })),
-  };
-  console.log(edit);
-  console.log(formData);
+
   const handleEditClick = () => {
-    // setEdit(true);
     setSearchParams("edit=true");
-
-    //is there a better way to do this because if edit is being clicked there should already be a recipe
-
-    // setFormData(formDataObject);
   };
   const navigate = useNavigate();
   const handleDeleteClick = async () => {
@@ -44,9 +26,9 @@ function RecipeDetails() {
 
   return recipe == undefined ? (
     <div>No Recipe</div>
-  ) : edit === "true" && formData ? ( //check if user is authorized
+  ) : edit === "true" ? ( // conditionally render form vs recipe view, (later - TODO: check if user is authorized)
     <MainContentContainer>
-      <EditRecipe setState={setRecipe} formData={formData} />
+      <Form recipe={recipe} setRecipe={setRecipe} />
     </MainContentContainer>
   ) : (
     <MainContentContainer>
