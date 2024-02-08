@@ -28,18 +28,18 @@ export default function EditRecipe({
     if (data.img) {
       const file = data.img[0];
       const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
+      fileReader.addEventListener("load", async () => {
         if (typeof fileReader.result === "string") {
           recipeObject.img = fileReader.result;
           console.log("here", recipeObject.img);
+          console.log(recipeObject);
+          const updatedRecipe = await recipeService.update(_id!, recipeObject);
+          setRecipe(updatedRecipe);
         }
       });
       fileReader.readAsDataURL(file);
+      setSearchParams("");
     }
-    const updatedRecipe = await recipeService.update(_id!, recipeObject);
-    setRecipe(updatedRecipe);
-    // setEdit(false);
-    setSearchParams("");
   };
   return <Form onSubmit={onSubmit} form={form} />;
 }
