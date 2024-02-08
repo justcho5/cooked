@@ -1,7 +1,7 @@
 import RoundButton from "./RoundButton";
 import { UseFormReturn, SubmitHandler, useFieldArray } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-
+import { useState } from "react";
 function Form({
   onSubmit,
   form,
@@ -34,10 +34,7 @@ function Form({
   });
 
   return (
-    <form
-      className="flex flex-col gap-5 border w-96 px-5"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
       <label className="flex flex-col">
         Recipe Title{" "}
         <input

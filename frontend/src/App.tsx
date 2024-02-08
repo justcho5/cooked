@@ -44,7 +44,10 @@ const router = createBrowserRouter([
                 handle: {
                   crumb: (data: RecipeType) => (
                     <Link to={`/recipes/${data._id}`} reloadDocument>
-                      /&nbsp;{data.name}
+                      /&nbsp;
+                      {data.name.length > 10
+                        ? `${data.name.slice(0, 10)} ...`
+                        : data.name}
                     </Link>
                   ),
                 },
@@ -69,7 +72,7 @@ function App() {
 
 function Layout() {
   return (
-    <div className="flex flex-col m-auto min-h-[100vh]">
+    <div className="flex flex-col min-h-[100vh]">
       <Header />
       <div className="flex-grow flex justify-center">
         <Outlet />
