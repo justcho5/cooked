@@ -4,7 +4,7 @@ import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import recipeService from "../services/recipes";
-
+import { useSearchParams } from "react-router-dom";
 function Form({
   recipe,
   setRecipe,
@@ -71,7 +71,7 @@ function Form({
 
   // useNavigate hook to programmatically navigate
   const navigate = useNavigate();
-
+  const [, setSearchParams] = useSearchParams();
   // Submit handler conditionally sends either put or post req
   const onSubmit: SubmitHandler<InputType> = async (data) => {
     const recipeObject: RecipeType = {
@@ -91,6 +91,7 @@ function Form({
         recipeObject
       );
       setRecipe(returnedObject);
+      setSearchParams("");
     } else {
       const returnedObject = await recipeService.create(recipeObject);
       navigate(`/recipes/${returnedObject._id}`);
