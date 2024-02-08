@@ -25,6 +25,17 @@ export default function EditRecipe({
       ingredients: data.ingredients.map((e) => e.ingredient),
       instructions: data.instructions.map((e) => e.instruction),
     };
+    if (data.img) {
+      const file = data.img[0];
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        if (typeof fileReader.result === "string") {
+          recipeObject.img = fileReader.result;
+          console.log("here", recipeObject.img);
+        }
+      });
+      fileReader.readAsDataURL(file);
+    }
     const updatedRecipe = await recipeService.update(_id!, recipeObject);
     setRecipe(updatedRecipe);
     // setEdit(false);

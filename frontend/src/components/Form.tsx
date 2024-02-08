@@ -33,6 +33,18 @@ function Form({
     name: "instructions",
   });
 
+  const [previewImage, setPreviewImage] = useState("");
+  const handleSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        if (typeof fileReader.result === "string")
+          setPreviewImage(fileReader.result);
+      });
+      fileReader.readAsDataURL(file);
+    }
+  };
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
       <label className="flex flex-col">
@@ -50,7 +62,19 @@ function Form({
         Description{" "}
         <textarea {...register("description", { maxLength: 500 })} />
       </label>
-
+      <label className="flex flex-col">
+        Image
+        <input
+          type="file"
+          placeholder="Recipe Image"
+          {...register("img")}
+          accept="image/*"
+          onChange={handleSelectImage}
+        />
+        {previewImage ? <img src={previewImage} /> : null}
+        {/*not rendering below*/}
+        <p>{errors.img?.message}</p>
+      </label>
       <label className="flex flex-col">
         Servings{" "}
         <input
