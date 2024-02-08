@@ -27,7 +27,7 @@ mongoose
 const app = express();
 app.use(cors());
 app.use(requestLogger);
-app.use(express.json()); // It parses incoming requests with JSON payloads and is based on body-parser
+app.use(express.json({ limit: "1mb" })); // It parses incoming requests with JSON payloads and is based on body-parser
 
 // app routing
 app.use("/api/recipes", recipesRouter);
