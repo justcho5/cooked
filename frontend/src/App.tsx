@@ -12,6 +12,7 @@ import RecipeDetails from "./pages/RecipeDetails";
 import Home from "./pages/Home";
 import CreateRecipe from "./pages/CreateRecipe";
 import recipeService from "./services/recipes";
+import MainContentContainer from "./components/MainContentContainer";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,8 @@ const router = createBrowserRouter([
               {
                 index: true,
                 loader: async () => {
-                  return await recipeService.getAll();
+                  const recipes = await recipeService.getAll();
+                  return recipes.reverse();
                 },
                 element: <Recipes />,
               },
@@ -75,7 +77,9 @@ function Layout() {
     <div className="flex flex-col min-h-[100vh]">
       <Header />
       <div className="flex-grow flex justify-center">
-        <Outlet />
+        <MainContentContainer>
+          <Outlet />
+        </MainContentContainer>
       </div>
       <Footer />
     </div>

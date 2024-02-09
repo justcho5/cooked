@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import recipeService from "../services/recipes";
 import { useSearchParams } from "react-router-dom";
+import InputError from "./InputError";
 
 function Form({
   recipe,
@@ -102,18 +103,21 @@ function Form({
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
       <label className="flex flex-col">
-        Recipe Title{" "}
         <input
+          className="text-lg"
           type="text"
           placeholder="Recipe Title"
           {...register("title", { required: "This is required" })}
         />
-        <p>{errors.title?.message}</p>
+        <InputError message={errors.title?.message} />
+        {/* <p>{}</p> */}
       </label>
 
       <label className="flex flex-col">
-        Description{" "}
-        <textarea {...register("description", { maxLength: 500 })} />
+        <textarea
+          placeholder="Description..."
+          {...register("description", { maxLength: 500 })}
+        />
       </label>
       <label className="flex flex-col">
         Image
@@ -124,21 +128,32 @@ function Form({
           accept="image/*"
           onChange={handleSelectImage}
         />
-        {previewImage ? <img src={previewImage} /> : null}
+        <div className="flex">
+          {previewImage ? (
+            <img src={previewImage} className="w-48 h-48 object-cover" />
+          ) : recipe ? (
+            <img src={recipe.img} className="w-24 h-24 object-cover" />
+          ) : null}
+        </div>
       </label>
-      <label className="flex flex-col">
-        Servings{" "}
-        <input
-          type="number"
-          placeholder="Servings"
-          {...register("servings", { required: "This is required", min: 1 })}
-        />
-        <p>{errors.servings?.message}</p>
-      </label>
+      <div className="flex flex-col">
+        <label className="flex gap-5">
+          Servings:
+          <input
+            className="w-12
+          "
+            type="number"
+            placeholder="4"
+            {...register("servings", { required: "This is required", min: 1 })}
+          />
+        </label>
+        <InputError message={errors.servings?.message} />
 
+        {/* <p>{errors.servings?.message}</p> */}
+      </div>
       <div className="flex flex-col">
         <div className="flex gap-2 items-center">
-          <span className="flex items-center">Ingredients</span>
+          <span className="flex items-center">Ingredients:</span>
           <RoundButton
             icon={faPlus}
             handleClick={() => {
@@ -164,7 +179,11 @@ function Form({
                   }}
                 />
               </div>
-              <p>{errors.ingredients?.[index]?.ingredient?.message}</p>
+              <InputError
+                message={errors.ingredients?.[index]?.ingredient?.message}
+              />
+
+              {/* <p>{errors.ingredients?.[index]?.ingredient?.message}</p> */}
             </li>
           ))}
         </ul>
@@ -172,7 +191,7 @@ function Form({
 
       <div className="flex flex-col">
         <div className="flex gap-2 items-center">
-          <span className="flex items-center">Directions</span>
+          <span className="flex items-center">Directions:</span>
           <RoundButton
             icon={faPlus}
             handleClick={() => {
@@ -198,7 +217,10 @@ function Form({
                   }}
                 />
               </div>
-              <p>{errors.instructions?.[index]?.instruction?.message}</p>
+              <InputError
+                message={errors.instructions?.[index]?.instruction?.message}
+              />
+              {/* <p>{errors.instructions?.[index]?.instruction?.message}</p> */}
             </li>
           ))}
         </ul>

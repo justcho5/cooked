@@ -23,7 +23,7 @@ function Breadcrumbs() {
     );
 
   return (
-    <ol className="flex">
+    <ol className="flex text-lg">
       {(crumbs as React.ReactNode[]).map((crumb, index) => (
         <li key={index}>{crumb}</li>
       ))}
