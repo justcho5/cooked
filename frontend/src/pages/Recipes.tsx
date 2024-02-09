@@ -3,7 +3,7 @@ import { useLoaderData, Link } from "react-router-dom";
 
 function Recipes() {
   // removed useEffect because useEffect because I already load data with the react-router data api
-  const recipes = useLoaderData() as RecipeType[];
+  const recipes = (useLoaderData() as RecipeType[]).reverse();
   return (
     <div className="m-[50px]">
       <Link to={`/recipes/new`}>
