@@ -17,6 +17,7 @@ interface RecipeType {
 interface InputType {
   title: string;
   description: string;
+  img?: FileList;
   servings: number;
   ingredients: { ingredient: string }[];
   instructions: { instruction: string }[];
