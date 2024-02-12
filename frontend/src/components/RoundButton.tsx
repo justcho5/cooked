@@ -1,10 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  //   IconLookup,
-  IconDefinition,
-  //   findIconDefinition,
-} from "@fortawesome/fontawesome-svg-core";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 function RoundButton({
   icon,
@@ -15,6 +11,7 @@ function RoundButton({
 }) {
   return (
     <button
+      type="button"
       className="rounded-full border w-5 h-5 flex items-center justify-center"
       onClick={handleClick}
     >
