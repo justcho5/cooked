@@ -99,7 +99,6 @@ function Form({
       navigate(`/recipes/${returnedObject._id}`);
     }
   };
-
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
       <label className="flex flex-col">
@@ -110,7 +109,6 @@ function Form({
           {...register("title", { required: "This is required" })}
         />
         <InputError message={errors.title?.message} />
-        {/* <p>{}</p> */}
       </label>
 
       <label className="flex flex-col">
@@ -148,8 +146,6 @@ function Form({
           />
         </label>
         <InputError message={errors.servings?.message} />
-
-        {/* <p>{errors.servings?.message}</p> */}
       </div>
       <div className="flex flex-col">
         <div className="flex gap-2 items-center">
@@ -157,7 +153,12 @@ function Form({
           <RoundButton
             icon={faPlus}
             handleClick={() => {
-              appendIngredients({ ingredient: "" });
+              appendIngredients(
+                { ingredient: "" },
+                {
+                  focusIndex: fieldsIngredients.length,
+                }
+              );
             }}
           />
         </div>
@@ -182,8 +183,6 @@ function Form({
               <InputError
                 message={errors.ingredients?.[index]?.ingredient?.message}
               />
-
-              {/* <p>{errors.ingredients?.[index]?.ingredient?.message}</p> */}
             </li>
           ))}
         </ul>
@@ -195,7 +194,10 @@ function Form({
           <RoundButton
             icon={faPlus}
             handleClick={() => {
-              appendInstructions({ instruction: "" });
+              appendInstructions(
+                { instruction: "" },
+                { focusIndex: fieldsInstructions.length }
+              );
             }}
           />
         </div>
@@ -220,7 +222,6 @@ function Form({
               <InputError
                 message={errors.instructions?.[index]?.instruction?.message}
               />
-              {/* <p>{errors.instructions?.[index]?.instruction?.message}</p> */}
             </li>
           ))}
         </ul>
