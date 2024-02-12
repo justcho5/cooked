@@ -8,6 +8,7 @@ function RecipeDetails() {
   const [recipe, setRecipe] = useState<RecipeType>(
     useLoaderData() as RecipeType
   );
+  console.log(recipe);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const edit = searchParams.get("edit");
@@ -30,7 +31,7 @@ function RecipeDetails() {
   ) : (
     <div className="flex flex-col gap-5">
       <h1 className="text-xl">{recipe.name}</h1>
-      {recipe.description.length > 0 && <em>{recipe.description}</em>}
+      {recipe.description && <em>{recipe.description}</em>}
       <img className="w-44 h-44 object-cover" src={recipe.img} />
       <div className="text-lg">{recipe.servings} Servings</div>
       <div>
