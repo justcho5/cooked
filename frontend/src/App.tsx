@@ -7,6 +7,8 @@ import {
   Link,
   RouterProvider,
   createBrowserRouter,
+  createRoutesFromElements,
+  Route,
 } from "react-router-dom";
 import RecipeDetails from "./pages/RecipeDetails";
 import Home from "./pages/Home";
@@ -14,60 +16,108 @@ import CreateRecipe from "./pages/CreateRecipe";
 import recipeService from "./services/recipes";
 import MainContentContainer from "./components/MainContentContainer";
 
-const router = createBrowserRouter([
-  {
-    element: <Layout />,
-    children: [
-      {
-        path: "/",
-        handle: { crumb: () => <Link to={`/`}>cooked&nbsp;</Link> },
-        children: [
-          { index: true, element: <Home /> },
-          {
-            path: "/recipes",
-            handle: {
-              crumb: () => <Link to="/recipes">/&nbsp;recipes&nbsp;</Link>,
-            },
-            children: [
-              {
-                index: true,
-                loader: async () => {
-                  const recipes = await recipeService.getAll();
-                  return recipes.reverse();
-                },
-                element: <Recipes />,
-              },
-              {
-                path: "/recipes/:_id",
-                element: <RecipeDetails />,
-                loader: async ({ params }) => {
-                  return await recipeService.get(params._id!);
-                },
-                handle: {
-                  crumb: (data: RecipeType) => (
-                    <Link to={`/recipes/${data._id}`} reloadDocument>
-                      /&nbsp;
-                      {data.name.length > 10
-                        ? `${data.name.slice(0, 10)} ...`
-                        : data.name}
-                    </Link>
-                  ),
-                },
-              },
-              {
-                path: "/recipes/new",
-                element: <CreateRecipe />,
-                handle: {
-                  crumb: () => <Link to="/recipes/new">/&nbsp;new</Link>,
-                },
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route element={<Layout />}>
+      <Route
+        path="/"
+        handle={{ crumb: () => <Link to={`/`}>cooked&nbsp;</Link> }}
+      >
+        <Route index={true} element={<Home />} />
+        <Route
+          path="/recipes"
+          handle={{
+            crumb: () => <Link to="/recipes">/&nbsp;recipes&nbsp;</Link>,
+          }}
+        >
+          <Route
+            index={true}
+            element={<Recipes />}
+            loader={async () => {
+              const recipes = await recipeService.getAll();
+              return recipes.reverse();
+            }}
+          />
+          <Route
+            path="/recipes/:id"
+            element={<RecipeDetails />}
+            loader={({ params }) => recipeService.get(params.id!)}
+            handle={{
+              crumb: (data: RecipeType) => (
+                <Link to={`/recipes/${data._id}`} reloadDocument>
+                  /&nbsp;
+                  {data.name.length > 10
+                    ? `${data.name.slice(0, 10)} ...`
+                    : data.name}
+                </Link>
+              ),
+            }}
+          />
+          <Route
+            path="/recipes/new"
+            element={<CreateRecipe />}
+            handle={{
+              crumb: () => <Link to="/recipes/new">/&nbsp;new</Link>,
+            }}
+          />
+        </Route>
+      </Route>
+    </Route>
+  )
+);
+// {
+//   element: <Layout />,
+//   children: [
+//     {
+//       path: "/",
+//       handle: { crumb: () => <Link to={`/`}>cooked&nbsp;</Link> },
+//       children: [
+//         { index: true, element: <Home /> },
+//         {
+//           path: "/recipes",
+//           handle: {
+//             crumb: () => <Link to="/recipes">/&nbsp;recipes&nbsp;</Link>,
+//           },
+//           children: [
+//             {
+//               index: true,
+//               loader: async () => {
+//                 const recipes = await recipeService.getAll();
+//                 return recipes.reverse();
+//               },
+//               element: <Recipes />,
+//             },
+//             {
+//               path: "/recipes/:_id",
+//               element: <RecipeDetails />,
+//               loader: async ({ params }) => {
+//                 return await recipeService.get(params._id!);
+//               },
+//               handle: {
+//                 crumb: (data: RecipeType) => (
+//                   <Link to={`/recipes/${data._id}`} reloadDocument>
+//                     /&nbsp;
+//                     {data.name.length > 10
+//                       ? `${data.name.slice(0, 10)} ...`
+//                       : data.name}
+//                   </Link>
+//                 ),
+//               },
+//             },
+//             {
+//               path: "/recipes/new",
+//               element: <CreateRecipe />,
+//               handle: {
+//                 crumb: () => <Link to="/recipes/new">/&nbsp;new</Link>,
+//               },
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//   ],
+// },
+// ]);
 function App() {
   return <RouterProvider router={router} />;
 }
