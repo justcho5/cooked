@@ -30,6 +30,7 @@ function Button({
         height,
         width,
       }}
+      type="button"
     >
       {children}
     </button>
