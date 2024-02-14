@@ -1,4 +1,4 @@
-import Button from "../components/Button";
+import RectangleButton from "../components/RectangleButton";
 import { useNavigate } from "react-router-dom";
 function Home() {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ function Home() {
   return (
     <div>
       <p>I cooked that.</p>
-      <Button text="View all" onClick={handleClick} />
+      <RectangleButton text="View All" onClick={handleClick} />
     </div>
   );
 }

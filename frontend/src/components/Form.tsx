@@ -152,7 +152,7 @@ function Form({
           <span className="flex items-center">Ingredients:</span>
           <RoundButton
             icon={faPlus}
-            handleClick={() => {
+            onClick={() => {
               appendIngredients(
                 { ingredient: "" },
                 {
@@ -175,7 +175,7 @@ function Form({
                 />
                 <RoundButton
                   icon={faMinus}
-                  handleClick={() => {
+                  onClick={() => {
                     removeIngredients(index);
                   }}
                 />
@@ -193,7 +193,7 @@ function Form({
           <span className="flex items-center">Directions:</span>
           <RoundButton
             icon={faPlus}
-            handleClick={() => {
+            onClick={() => {
               appendInstructions(
                 { instruction: "" },
                 { focusIndex: fieldsInstructions.length }
@@ -214,7 +214,7 @@ function Form({
                 />
                 <RoundButton
                   icon={faMinus}
-                  handleClick={() => {
+                  onClick={() => {
                     removeInstructions(index);
                   }}
                 />
