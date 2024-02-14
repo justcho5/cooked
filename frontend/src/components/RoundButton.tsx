@@ -16,6 +16,7 @@ function RoundButton({ icon, onClick }: Props) {
       onClick={onClick}
       radius="50%"
       width="20px"
+      type="button"
     >
       <FontAwesomeIcon icon={icon} />
     </Button>

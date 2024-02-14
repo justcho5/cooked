@@ -1,13 +1,14 @@
-import React from "react";
+import React, { ButtonHTMLAttributes } from "react";
 
 interface Props {
   border: string;
   color: string;
   children?: React.ReactNode;
   height: string;
-  onClick: () => void;
+  onClick: (data?: any) => void;
   radius: string;
   width: string;
+  type: "submit" | "reset" | "button" | undefined;
 }
 
 function Button({
@@ -18,6 +19,7 @@ function Button({
   onClick,
   radius,
   width,
+  type,
 }: Props) {
   return (
     <button
@@ -30,7 +32,7 @@ function Button({
         height,
         width,
       }}
-      type="button"
+      type={type}
     >
       {children}
     </button>

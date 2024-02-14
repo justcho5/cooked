@@ -14,6 +14,7 @@ function RectangleButton({ text, onClick }: Props) {
       width="64px"
       onClick={onClick}
       radius="5px"
+      type="button"
     >
       {text}
     </Button>

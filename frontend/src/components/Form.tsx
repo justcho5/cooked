@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import recipeService from "../services/recipes";
 import { useSearchParams } from "react-router-dom";
 import InputError from "./InputError";
+import Button from "./Button";
 
 function Form({
   recipe,
@@ -226,10 +227,17 @@ function Form({
           ))}
         </ul>
       </div>
-
-      <button className="border" type="submit">
+      <Button
+        border="solid"
+        color="transparent"
+        height="24px"
+        onClick={onSubmit}
+        radius="5px"
+        width="100%"
+        type="submit"
+      >
         Save
-      </button>
+      </Button>
     </form>
   );
 }
