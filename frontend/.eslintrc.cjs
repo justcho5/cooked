@@ -15,5 +15,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     "@typescript-eslint/prefer-optional-chain": "error",
+    "object-shorthand": ["error", "always"],
   },
 };

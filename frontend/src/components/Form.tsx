@@ -14,6 +14,7 @@ interface Props {
 }
 function Form({ recipe, setRecipe }: Props) {
   // use the react-hook-forms useForm Hook
+
   const {
     control,
     handleSubmit,
@@ -25,11 +26,11 @@ function Form({ recipe, setRecipe }: Props) {
           title: recipe.name,
           description: recipe.description,
           servings: recipe.servings,
-          ingredients: recipe.ingredients.map((ingred) => ({
-            ingredient: ingred,
+          ingredients: recipe.ingredients.map((ingredient) => ({
+            ingredient,
           })),
           instructions: recipe.instructions.map((instruction) => ({
-            instruction: instruction,
+            instruction,
           })),
         }
       : {},
