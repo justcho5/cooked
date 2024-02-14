@@ -1,5 +1,10 @@
 import RoundButton from "./RoundButton";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import {
+  SubmitHandler,
+  UseFieldArrayReturn,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -38,21 +43,13 @@ function Form({ recipe, setRecipe }: Props) {
   });
 
   // Custom hook for dynamic form input (ingredients)
-  const {
-    fields: fieldsIngredients,
-    append: appendIngredients,
-    remove: removeIngredients,
-  } = useFieldArray({
+  const ingredients = useFieldArray({
     control,
     name: "ingredients",
   });
 
   // Custom hook for dynamic form input (instructions)
-  const {
-    fields: fieldsInstructions,
-    append: appendInstructions,
-    remove: removeInstructions,
-  } = useFieldArray({
+  const instructions = useFieldArray({
     control,
     name: "instructions",
   });
@@ -153,17 +150,17 @@ function Form({ recipe, setRecipe }: Props) {
           <RoundButton
             icon={faPlus}
             onClick={() => {
-              appendIngredients(
+              ingredients.append(
                 { ingredient: "" },
                 {
-                  focusIndex: fieldsIngredients.length,
+                  focusIndex: ingredients.fields.length,
                 }
               );
             }}
           />
         </div>
         <ul className="flex flex-col">
-          {fieldsIngredients.map((field, index) => (
+          {ingredients.fields.map((field, index) => (
             <li key={field.id}>
               <div className="flex items-center">
                 <input
@@ -176,7 +173,7 @@ function Form({ recipe, setRecipe }: Props) {
                 <RoundButton
                   icon={faMinus}
                   onClick={() => {
-                    removeIngredients(index);
+                    ingredients.remove(index);
                   }}
                 />
               </div>
@@ -194,15 +191,15 @@ function Form({ recipe, setRecipe }: Props) {
           <RoundButton
             icon={faPlus}
             onClick={() => {
-              appendInstructions(
+              instructions.append(
                 { instruction: "" },
-                { focusIndex: fieldsInstructions.length }
+                { focusIndex: instructions.fields.length }
               );
             }}
           />
         </div>
         <ul className="flex flex-col">
-          {fieldsInstructions.map((field, index) => (
+          {instructions.fields.map((field, index) => (
             <li key={field.id}>
               <div className="flex items-center">
                 <input
@@ -215,7 +212,7 @@ function Form({ recipe, setRecipe }: Props) {
                 <RoundButton
                   icon={faMinus}
                   onClick={() => {
-                    removeInstructions(index);
+                    instructions.remove(index);
                   }}
                 />
               </div>
