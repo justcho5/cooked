@@ -8,13 +8,11 @@ import { useSearchParams } from "react-router-dom";
 import InputError from "./InputError";
 import Button from "./Button";
 
-function Form({
-  recipe,
-  setRecipe,
-}: {
+interface Props {
   recipe?: RecipeType;
-  setRecipe?: React.Dispatch<React.SetStateAction<RecipeType>>;
-}) {
+  setRecipe?: (recipe: RecipeType) => void;
+}
+function Form({ recipe, setRecipe }: Props) {
   // use the react-hook-forms useForm Hook
   const {
     control,
