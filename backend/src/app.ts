@@ -1,26 +1,11 @@
 // This is my express app
 import express from "express";
-import mongoose from "mongoose";
-
-import { MONGODB_URI } from "./utils/config";
-import logger from "./utils/logger";
 import {
   requestLogger,
   unknownEndpoint,
   errorHandler,
 } from "./utils/middleware";
-
-import recipesRouter from "./controllers/recipes";
-// connect to db
-mongoose.set("strictQuery", false);
-mongoose
-  .connect(MONGODB_URI!)
-  .then(() => {
-    logger.info("connected to MongoDB");
-  })
-  .catch((error) => {
-    logger.error("error connecting to db", error);
-  });
+import { recipesRouter } from "./routers/recipes";
 
 // make an express app
 const app = express();
