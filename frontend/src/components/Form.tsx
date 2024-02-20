@@ -1,10 +1,5 @@
 import RoundButton from "./RoundButton";
-import {
-  SubmitHandler,
-  UseFieldArrayReturn,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -84,7 +79,7 @@ function Form({ recipe, setRecipe }: Props) {
     if (previewImage.length > 0) {
       recipeObject.img = previewImage;
     }
-    if (recipe !== undefined && setRecipe !== undefined) {
+    if (recipe && setRecipe) {
       const returnedObject = await recipeService.update(
         recipe._id!,
         recipeObject
