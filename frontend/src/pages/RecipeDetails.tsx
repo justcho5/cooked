@@ -5,9 +5,7 @@ import Form from "../components/Form";
 import RectangleButton from "../components/RectangleButton";
 
 function RecipeDetails() {
-  const [recipe, setRecipe] = useState<RecipeType>(
-    useLoaderData() as RecipeType
-  );
+  const [recipe, setRecipe] = useState(useLoaderData() as RecipeType);
   console.log(recipe);
 
   const [searchParams, setSearchParams] = useSearchParams();
