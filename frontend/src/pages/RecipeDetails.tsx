@@ -22,10 +22,19 @@ function RecipeDetails() {
     }
   };
 
+  const onSubmit = async (recipeObject: RecipeType) => {
+    const returnedObject = await recipeService.update(
+      recipe._id!,
+      recipeObject
+    );
+    setRecipe(returnedObject);
+    setSearchParams("");
+  };
+
   return recipe == undefined ? (
     <div>No Recipe</div>
   ) : edit === "true" ? ( // conditionally render form vs recipe view, (later - TODO: check if user is authorized)
-    <Form recipe={recipe} setRecipe={setRecipe} />
+    <Form recipe={recipe} onSubmit={onSubmit} />
   ) : (
     <div className="flex flex-col gap-5">
       <h1 className="text-xl">{recipe.name}</h1>

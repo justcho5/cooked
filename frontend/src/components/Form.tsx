@@ -2,17 +2,17 @@ import RoundButton from "./RoundButton";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import recipeService from "../services/recipes";
-import { useSearchParams } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+// import recipeService from "../services/recipes";
+// import { useSearchParams } from "react-router-dom";
 import InputError from "./InputError";
-import Button from "./Button";
+import { Button } from "./Button";
 
 interface Props {
   recipe?: RecipeType;
-  setRecipe?: (recipe: RecipeType) => void;
+  onSubmit: (recipe: RecipeType) => void;
 }
-function Form({ recipe, setRecipe }: Props) {
+function Form({ recipe, ...props }: Props) {
   // use the react-hook-forms useForm Hook
 
   const {
@@ -63,9 +63,6 @@ function Form({ recipe, setRecipe }: Props) {
     }
   };
 
-  // useNavigate hook to programmatically navigate
-  const navigate = useNavigate();
-  const [, setSearchParams] = useSearchParams();
   // Submit handler conditionally sends either put or post req
   const onSubmit: SubmitHandler<InputType> = async (data) => {
     const recipeObject: RecipeType = {
@@ -79,17 +76,7 @@ function Form({ recipe, setRecipe }: Props) {
     if (previewImage.length > 0) {
       recipeObject.img = previewImage;
     }
-    if (recipe && setRecipe) {
-      const returnedObject = await recipeService.update(
-        recipe._id!,
-        recipeObject
-      );
-      setRecipe(returnedObject);
-      setSearchParams("");
-    } else {
-      const returnedObject = await recipeService.create(recipeObject);
-      navigate(`/recipes/${returnedObject._id}`);
-    }
+    props.onSubmit(recipeObject);
   };
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
