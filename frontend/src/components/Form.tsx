@@ -1,18 +1,18 @@
-import RoundButton from "./RoundButton";
+import { RoundButton } from "./RoundButton";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import recipeService from "../services/recipes";
 // import { useSearchParams } from "react-router-dom";
-import InputError from "./InputError";
+import { InputError } from "./InputError";
 import { Button } from "./Button";
 
-interface Props {
+export interface Props {
   recipe?: RecipeType;
   onSubmit: (recipe: RecipeType) => void;
 }
-function Form({ recipe, ...props }: Props) {
+export function Form({ recipe, ...props }: Props) {
   // use the react-hook-forms useForm Hook
 
   const {
@@ -219,5 +219,3 @@ function Form({ recipe, ...props }: Props) {
     </form>
   );
 }
-
-export default Form;

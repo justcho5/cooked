@@ -1,7 +1,7 @@
 import "./App.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Recipes from "./pages/Recipes";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { Recipes } from "./pages/Recipes";
 import {
   Outlet,
   Link,
@@ -10,11 +10,11 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-import RecipeDetails from "./pages/RecipeDetails";
-import Home from "./pages/Home";
-import CreateRecipe from "./pages/CreateRecipe";
-import recipeService from "./services/recipes";
-import MainContentContainer from "./components/MainContentContainer";
+import { RecipeDetails } from "./pages/RecipeDetails";
+import { Home } from "./pages/Home";
+import { CreateRecipe } from "./pages/CreateRecipe";
+import { getAll, get } from "./services/recipes";
+import { MainContentContainer } from "./components/MainContentContainer";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,14 +34,14 @@ const router = createBrowserRouter(
             index={true}
             element={<Recipes />}
             loader={async () => {
-              const recipes = await recipeService.getAll();
+              const recipes = await getAll();
               return recipes.reverse();
             }}
           />
           <Route
             path="/recipes/:id"
             element={<RecipeDetails />}
-            loader={({ params }) => recipeService.get(params.id!)}
+            loader={({ params }) => get(params.id!)}
             handle={{
               crumb: (data: RecipeType) => (
                 <Link to={`/recipes/${data._id}`} reloadDocument>

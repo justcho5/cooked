@@ -1,10 +1,11 @@
 // import React from "react";
 import { UIMatch, useMatches, useSearchParams } from "react-router-dom";
-type HandleType = {
-  crumb: (data?: RecipeType) => React.ReactNode;
-};
 
-function Breadcrumbs() {
+export interface HandleType {
+  crumb: (data?: RecipeType) => React.ReactNode;
+}
+
+export function Breadcrumbs() {
   const [searchParams] = useSearchParams();
   const edit = searchParams.get("edit");
 
@@ -25,5 +26,3 @@ function Breadcrumbs() {
     </ol>
   );
 }
-
-export default Breadcrumbs;

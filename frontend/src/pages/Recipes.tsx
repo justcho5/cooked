@@ -1,8 +1,8 @@
-import Card from "../components/Card";
+import { Card } from "../components/Card";
 import { useLoaderData, Link, useNavigate } from "react-router-dom";
-import RectangleButton from "../components/RectangleButton";
+import { RectangleButton } from "../components/RectangleButton";
 
-function Recipes() {
+export function Recipes() {
   // removed useEffect because useEffect because I already load data with the react-router data api
   const recipes = useLoaderData() as RecipeType[];
   const navigate = useNavigate();
@@ -22,5 +22,3 @@ function Recipes() {
     </div>
   );
 }
-
-export default Recipes;

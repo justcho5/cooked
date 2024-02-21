@@ -1,7 +1,7 @@
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function InputError({ message }: { message: string | undefined }) {
+export function InputError({ message }: { message: string | undefined }) {
   return message ? (
     <p className="text-red-500">
       <FontAwesomeIcon icon={faExclamationTriangle} />
@@ -9,5 +9,3 @@ function InputError({ message }: { message: string | undefined }) {
     </p>
   ) : null;
 }
-
-export default InputError;

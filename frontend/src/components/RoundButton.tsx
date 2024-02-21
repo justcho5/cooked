@@ -1,13 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import Button from "./Button";
+import { Button } from "./Button";
 
-interface Props {
+export interface Props {
   icon: IconDefinition;
   onClick: () => void;
 }
 
-function RoundButton({ icon, onClick }: Props) {
+export function RoundButton({ icon, onClick }: Props) {
   return (
     <Button
       border="solid"
@@ -22,5 +22,3 @@ function RoundButton({ icon, onClick }: Props) {
     </Button>
   );
 }
-
-export default RoundButton;

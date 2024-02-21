@@ -1,6 +1,6 @@
 import React from "react";
 
-interface Props {
+export interface Props {
   border: string;
   color: string;
   children?: React.ReactNode;
@@ -11,7 +11,7 @@ interface Props {
   type: "submit" | "reset" | "button" | undefined;
 }
 
-function Button({
+export function Button({
   border,
   color,
   children,
@@ -38,5 +38,3 @@ function Button({
     </button>
   );
 }
-
-export default Button;

@@ -1,10 +1,10 @@
 import { useNavigate, useLoaderData, useSearchParams } from "react-router-dom";
-import recipeService from "../services/recipes";
+import { update, remove } from "../services/recipes";
 import { useState } from "react";
-import Form from "../components/Form";
-import RectangleButton from "../components/RectangleButton";
+import { Form } from "../components/Form";
+import { RectangleButton } from "../components/RectangleButton";
 
-function RecipeDetails() {
+export function RecipeDetails() {
   const [recipe, setRecipe] = useState(useLoaderData() as RecipeType);
   console.log(recipe);
 
@@ -17,16 +17,13 @@ function RecipeDetails() {
   const navigate = useNavigate();
   const handleDeleteClick = async () => {
     if (recipe._id) {
-      await recipeService.remove(recipe._id);
+      await remove(recipe._id);
       navigate("/recipes");
     }
   };
 
   const onSubmit = async (recipeObject: RecipeType) => {
-    const returnedObject = await recipeService.update(
-      recipe._id!,
-      recipeObject
-    );
+    const returnedObject = await update(recipe._id!, recipeObject);
     setRecipe(returnedObject);
     setSearchParams("");
   };
@@ -60,5 +57,3 @@ function RecipeDetails() {
     </div>
   );
 }
-
-export default RecipeDetails;

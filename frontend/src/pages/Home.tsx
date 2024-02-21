@@ -1,6 +1,6 @@
-import RectangleButton from "../components/RectangleButton";
+import { RectangleButton } from "../components/RectangleButton";
 import { useNavigate } from "react-router-dom";
-function Home() {
+export function Home() {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/recipes");
@@ -12,5 +12,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

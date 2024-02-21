@@ -1,11 +1,11 @@
-import Button from "./Button";
+import { Button } from "./Button";
 
-interface Props {
+export interface Props {
   text: string;
   onClick: () => void;
 }
 
-function RectangleButton({ text, onClick }: Props) {
+export function RectangleButton({ text, onClick }: Props) {
   return (
     <Button
       border="solid"
@@ -20,5 +20,3 @@ function RectangleButton({ text, onClick }: Props) {
     </Button>
   );
 }
-
-export default RectangleButton;
