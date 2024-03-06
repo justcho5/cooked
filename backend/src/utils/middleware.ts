@@ -1,30 +1,26 @@
 // custom middleware
-import logger from "./logger";
-import { NextFunction, Request, Response } from "express";
+import { logInfo, logError } from "./logger";
+import { ErrorRequestHandler, RequestHandler } from "express";
 
-const requestLogger = (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
-  logger.info("Method:", request.method);
-  logger.info("Path:  ", request.path);
-  logger.info("Body:  ", request.body);
-  logger.info("---");
+export const requestLogger: RequestHandler = (request, response, next) => {
+  logInfo("Method:", request.method);
+  logInfo("Path:  ", request.path);
+  logInfo("Body:  ", request.body);
+  logInfo("---");
   next();
 };
 
-const unknownEndpoint = (request: Request, response: Response) => {
+export const unknownEndpoint: RequestHandler = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 
-const errorHandler = (
-  error: Error,
-  request: Request,
-  response: Response,
-  next: NextFunction
+export const errorHandler: ErrorRequestHandler = (
+  error,
+  request,
+  response,
+  next
 ) => {
-  logger.error(error.message);
+  logError(error.message);
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
@@ -35,5 +31,3 @@ const errorHandler = (
 
   next(error);
 };
-
-export { requestLogger, unknownEndpoint, errorHandler };

@@ -1,6 +1,6 @@
-import Recipe from "../models/recipe";
-import { RecipeType } from "../models/recipe";
-const newRecipe: RecipeType = {
+import { Recipe } from "../models/recipe";
+// import { Recipe } from "../models/recipe";
+const newRecipe: Recipe = {
   name: "Bacon-Wrapped Cherries",
   description:
     "This recipe for bacon-wrapped cherries makes one of my favorite appetizers. I say it serves 18 people, but if no one stops me, I will eat the whole batch myself and start making more.",
@@ -22,7 +22,7 @@ const newRecipe: RecipeType = {
   rating: 4.5,
 };
 
-const initialRecipes: Array<RecipeType> = [
+export const initialRecipes: Array<Recipe> = [
   {
     name: "Spaghetti",
     description: "",
@@ -70,7 +70,7 @@ const initialRecipes: Array<RecipeType> = [
   },
 ];
 
-const nonExistingId = async () => {
+export const nonExistingId = async () => {
   const recipe = new Recipe(newRecipe);
   await recipe.save();
   await recipe.deleteOne();
@@ -80,9 +80,7 @@ const nonExistingId = async () => {
 };
 
 // fetch all recipes in db
-const recipesInDb = async () => {
+export const recipesInDb = async () => {
   const recipes = await Recipe.find({});
   return recipes.map((recipe) => recipe.toJSON());
 };
-
-export default { newRecipe, initialRecipes, nonExistingId, recipesInDb };

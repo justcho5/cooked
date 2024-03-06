@@ -1,20 +1,20 @@
-import RoundButton from "./RoundButton";
+import { RoundButton } from "./RoundButton";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import recipeService from "../services/recipes";
-import { useSearchParams } from "react-router-dom";
-import InputError from "./InputError";
+// import { useNavigate } from "react-router-dom";
+// import recipeService from "../services/recipes";
+// import { useSearchParams } from "react-router-dom";
+import { InputError } from "./InputError";
+import { Button } from "./Button";
 
-function Form({
-  recipe,
-  setRecipe,
-}: {
+export interface Props {
   recipe?: RecipeType;
-  setRecipe?: React.Dispatch<React.SetStateAction<RecipeType>>;
-}) {
+  onSubmit: (recipe: RecipeType) => void;
+}
+export function Form({ recipe, ...props }: Props) {
   // use the react-hook-forms useForm Hook
+
   const {
     control,
     handleSubmit,
@@ -26,11 +26,11 @@ function Form({
           title: recipe.name,
           description: recipe.description,
           servings: recipe.servings,
-          ingredients: recipe.ingredients.map((ingred) => ({
-            ingredient: ingred,
+          ingredients: recipe.ingredients.map((ingredient) => ({
+            ingredient,
           })),
           instructions: recipe.instructions.map((instruction) => ({
-            instruction: instruction,
+            instruction,
           })),
         }
       : {},
@@ -38,21 +38,13 @@ function Form({
   });
 
   // Custom hook for dynamic form input (ingredients)
-  const {
-    fields: fieldsIngredients,
-    append: appendIngredients,
-    remove: removeIngredients,
-  } = useFieldArray({
+  const ingredients = useFieldArray({
     control,
     name: "ingredients",
   });
 
   // Custom hook for dynamic form input (instructions)
-  const {
-    fields: fieldsInstructions,
-    append: appendInstructions,
-    remove: removeInstructions,
-  } = useFieldArray({
+  const instructions = useFieldArray({
     control,
     name: "instructions",
   });
@@ -71,9 +63,6 @@ function Form({
     }
   };
 
-  // useNavigate hook to programmatically navigate
-  const navigate = useNavigate();
-  const [, setSearchParams] = useSearchParams();
   // Submit handler conditionally sends either put or post req
   const onSubmit: SubmitHandler<InputType> = async (data) => {
     const recipeObject: RecipeType = {
@@ -87,17 +76,7 @@ function Form({
     if (previewImage.length > 0) {
       recipeObject.img = previewImage;
     }
-    if (recipe !== undefined && setRecipe !== undefined) {
-      const returnedObject = await recipeService.update(
-        recipe._id!,
-        recipeObject
-      );
-      setRecipe(returnedObject);
-      setSearchParams("");
-    } else {
-      const returnedObject = await recipeService.create(recipeObject);
-      navigate(`/recipes/${returnedObject._id}`);
-    }
+    props.onSubmit(recipeObject);
   };
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
@@ -152,18 +131,18 @@ function Form({
           <span className="flex items-center">Ingredients:</span>
           <RoundButton
             icon={faPlus}
-            handleClick={() => {
-              appendIngredients(
+            onClick={() => {
+              ingredients.append(
                 { ingredient: "" },
                 {
-                  focusIndex: fieldsIngredients.length,
+                  focusIndex: ingredients.fields.length,
                 }
               );
             }}
           />
         </div>
         <ul className="flex flex-col">
-          {fieldsIngredients.map((field, index) => (
+          {ingredients.fields.map((field, index) => (
             <li key={field.id}>
               <div className="flex items-center">
                 <input
@@ -175,8 +154,8 @@ function Form({
                 />
                 <RoundButton
                   icon={faMinus}
-                  handleClick={() => {
-                    removeIngredients(index);
+                  onClick={() => {
+                    ingredients.remove(index);
                   }}
                 />
               </div>
@@ -193,16 +172,16 @@ function Form({
           <span className="flex items-center">Directions:</span>
           <RoundButton
             icon={faPlus}
-            handleClick={() => {
-              appendInstructions(
+            onClick={() => {
+              instructions.append(
                 { instruction: "" },
-                { focusIndex: fieldsInstructions.length }
+                { focusIndex: instructions.fields.length }
               );
             }}
           />
         </div>
         <ul className="flex flex-col">
-          {fieldsInstructions.map((field, index) => (
+          {instructions.fields.map((field, index) => (
             <li key={field.id}>
               <div className="flex items-center">
                 <input
@@ -214,8 +193,8 @@ function Form({
                 />
                 <RoundButton
                   icon={faMinus}
-                  handleClick={() => {
-                    removeInstructions(index);
+                  onClick={() => {
+                    instructions.remove(index);
                   }}
                 />
               </div>
@@ -226,12 +205,17 @@ function Form({
           ))}
         </ul>
       </div>
-
-      <button className="border" type="submit">
+      <Button
+        border="solid"
+        color="transparent"
+        height="24px"
+        onClick={onSubmit}
+        radius="5px"
+        width="100%"
+        type="submit"
+      >
         Save
-      </button>
+      </Button>
     </form>
   );
 }
-
-export default Form;

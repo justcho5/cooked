@@ -1,4 +1,7 @@
-function Card({ recipe }: { recipe: RecipeType }) {
+export interface Props {
+  recipe: RecipeType;
+}
+export function Card({ recipe }: Props) {
   return (
     <div className="flex border rounded-md border-black mt-8 w-[100%] h-20">
       {/* <img
@@ -12,5 +15,3 @@ function Card({ recipe }: { recipe: RecipeType }) {
     </div>
   );
 }
-
-export default Card;
