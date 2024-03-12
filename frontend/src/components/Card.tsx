@@ -10,7 +10,9 @@ export function Card({ recipe }: Props) {
       /> */}
       <div className="p-1">
         <div>{recipe.name}</div>
-        <div>{recipe.description}</div>
+        <div>
+          <em>{recipe.description}</em>
+        </div>
       </div>
     </div>
   );
