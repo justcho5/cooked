@@ -31,6 +31,7 @@ export function Button({
         borderRadius: radius,
         height,
         width,
+        padding: "0 10px",
       }}
       type={type}
     >

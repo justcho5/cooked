@@ -40,15 +40,23 @@ export function RecipeDetails() {
       <div className="text-lg">{recipe.servings} Servings</div>
       <div>
         <div className="text-lg">Ingredients:</div>
-        {recipe.ingredients.map((ingredient, idx) => (
-          <div key={idx}>{ingredient}</div>
-        ))}
+        <ul>
+          {recipe.ingredients.map((ingredient, idx) => (
+            <li className="list-disc list-inside" key={idx}>
+              {ingredient}
+            </li>
+          ))}
+        </ul>
       </div>
       <div>
         <div className="text-lg">Instructions:</div>
-        {recipe.instructions.map((instruction, idx) => (
-          <div key={idx}>{instruction}</div>
-        ))}
+        <ol>
+          {recipe.instructions.map((instruction, idx) => (
+            <li className="list-decimal list-inside" key={idx}>
+              {instruction}
+            </li>
+          ))}
+        </ol>
       </div>
       <div className="flex gap-3">
         <RectangleButton text="Edit" onClick={handleEditClick} />

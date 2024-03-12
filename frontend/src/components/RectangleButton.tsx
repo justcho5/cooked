@@ -11,7 +11,7 @@ export function RectangleButton({ text, onClick }: Props) {
       border="solid"
       color="transparent"
       height="32px"
-      width="64px"
+      width="auto"
       onClick={onClick}
       radius="5px"
       type="button"

@@ -1,7 +1,7 @@
 import { RoundButton } from "./RoundButton";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import recipeService from "../services/recipes";
 // import { useSearchParams } from "react-router-dom";
@@ -10,30 +10,33 @@ import { Button } from "./Button";
 
 export interface Props {
   recipe?: RecipeType;
-  onSubmit: (recipe: RecipeType) => void;
+  onSubmit: (recipe: RecipeType) => Promise<void>;
 }
 export function Form({ recipe, ...props }: Props) {
-  // use the react-hook-forms useForm Hook
+  const defaultRecipeObject = recipe
+    ? {
+        title: recipe.name,
+        description: recipe.description,
+        servings: recipe.servings,
+        ingredients: recipe.ingredients.map((ingredient) => ({
+          ingredient,
+        })),
+        instructions: recipe.instructions.map((instruction) => ({
+          instruction,
+        })),
+      }
+    : {};
 
+  console.log("default", defaultRecipeObject);
   const {
     control,
+    reset,
     handleSubmit,
     register, // method for registering input and apply validation rules to react hook form
     formState: { errors },
   } = useForm<InputType>({
-    defaultValues: recipe // if there's a recipe (editing existing recipe), then prefill form
-      ? {
-          title: recipe.name,
-          description: recipe.description,
-          servings: recipe.servings,
-          ingredients: recipe.ingredients.map((ingredient) => ({
-            ingredient,
-          })),
-          instructions: recipe.instructions.map((instruction) => ({
-            instruction,
-          })),
-        }
-      : {},
+    defaultValues: defaultRecipeObject,
+
     mode: "onTouched",
   });
 
@@ -48,6 +51,11 @@ export function Form({ recipe, ...props }: Props) {
     control,
     name: "instructions",
   });
+
+  useEffect(() => {
+    console.log("reset");
+    reset(defaultRecipeObject);
+  }, [recipe]);
 
   // set State and handler image selection and preview
   const [previewImage, setPreviewImage] = useState("");
@@ -65,6 +73,11 @@ export function Form({ recipe, ...props }: Props) {
 
   // Submit handler conditionally sends either put or post req
   const onSubmit: SubmitHandler<InputType> = async (data) => {
+    console.log("entered function");
+    if (!data.ingredients || !data.instructions) {
+      console.log("No data for ingredients or instructions");
+      return; // Exit early if data is incomplete
+    }
     const recipeObject: RecipeType = {
       name: data.title,
       description: data.description,
@@ -72,12 +85,15 @@ export function Form({ recipe, ...props }: Props) {
       ingredients: data.ingredients.map((e) => e.ingredient),
       instructions: data.instructions.map((e) => e.instruction),
     };
+    console.log("after", data);
 
     if (previewImage.length > 0) {
       recipeObject.img = previewImage;
     }
-    props.onSubmit(recipeObject);
+    await props.onSubmit(recipeObject);
+    console.log("after after", data);
   };
+
   return (
     <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
       <label className="flex flex-col">
@@ -209,10 +225,10 @@ export function Form({ recipe, ...props }: Props) {
         border="solid"
         color="transparent"
         height="24px"
-        onClick={onSubmit}
         radius="5px"
         width="100%"
         type="submit"
+        onClick={() => {}}
       >
         Save
       </Button>
