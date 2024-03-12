@@ -6,9 +6,9 @@ import { Form } from "../components/Form";
 import { create } from "../services/recipes";
 import { importByURL, generateWithGPT } from "../services/generate";
 import { useState } from "react";
-import { Button } from "../@/components/ui/button";
-import { Input } from "../@/components/ui/input";
-import { Icons } from "../@/components/Icons";
+import { Button } from "../../@/components/ui/Button";
+import { Input } from "../../@/components/ui/Input";
+import { Icons } from "../../@/components/icons";
 
 // export function InputWithButton({
 //   text,
