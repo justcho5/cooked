@@ -39,6 +39,6 @@ recipeSchema.set("toJSON", {
 });
 
 // creates a recipe type from recipe schema
-export type RecipeType = mongoose.InferSchemaType<typeof recipeSchema>;
+export type Recipe = mongoose.InferSchemaType<typeof recipeSchema>;
 
-export default mongoose.model("Recipe", recipeSchema);
+export const Recipe = mongoose.model("Recipe", recipeSchema);

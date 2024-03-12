@@ -1,61 +1,61 @@
-import RoundButton from "./RoundButton";
+import { RoundButton } from "./RoundButton";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import recipeService from "../services/recipes";
-import { useSearchParams } from "react-router-dom";
-import InputError from "./InputError";
+import { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import recipeService from "../services/recipes";
+// import { useSearchParams } from "react-router-dom";
+import { InputError } from "./InputError";
+import { Button } from "./Button";
 
-function Form({
-  recipe,
-  setRecipe,
-}: {
+export interface Props {
   recipe?: RecipeType;
-  setRecipe?: React.Dispatch<React.SetStateAction<RecipeType>>;
-}) {
-  // use the react-hook-forms useForm Hook
+  onSubmit: (recipe: RecipeType) => Promise<void>;
+}
+export function Form({ recipe, ...props }: Props) {
+  const defaultRecipeObject = recipe
+    ? {
+        title: recipe.name,
+        description: recipe.description,
+        servings: recipe.servings,
+        ingredients: recipe.ingredients.map((ingredient) => ({
+          ingredient,
+        })),
+        instructions: recipe.instructions.map((instruction) => ({
+          instruction,
+        })),
+      }
+    : {};
+
+  console.log("default", defaultRecipeObject);
   const {
     control,
+    reset,
     handleSubmit,
     register, // method for registering input and apply validation rules to react hook form
     formState: { errors },
   } = useForm<InputType>({
-    defaultValues: recipe // if there's a recipe (editing existing recipe), then prefill form
-      ? {
-          title: recipe.name,
-          description: recipe.description,
-          servings: recipe.servings,
-          ingredients: recipe.ingredients.map((ingred) => ({
-            ingredient: ingred,
-          })),
-          instructions: recipe.instructions.map((instruction) => ({
-            instruction: instruction,
-          })),
-        }
-      : {},
+    defaultValues: defaultRecipeObject,
+
     mode: "onTouched",
   });
 
   // Custom hook for dynamic form input (ingredients)
-  const {
-    fields: fieldsIngredients,
-    append: appendIngredients,
-    remove: removeIngredients,
-  } = useFieldArray({
+  const ingredients = useFieldArray({
     control,
     name: "ingredients",
   });
 
   // Custom hook for dynamic form input (instructions)
-  const {
-    fields: fieldsInstructions,
-    append: appendInstructions,
-    remove: removeInstructions,
-  } = useFieldArray({
+  const instructions = useFieldArray({
     control,
     name: "instructions",
   });
+
+  useEffect(() => {
+    console.log("reset");
+    reset(defaultRecipeObject);
+  }, [recipe]);
 
   // set State and handler image selection and preview
   const [previewImage, setPreviewImage] = useState("");
@@ -71,11 +71,13 @@ function Form({
     }
   };
 
-  // useNavigate hook to programmatically navigate
-  const navigate = useNavigate();
-  const [, setSearchParams] = useSearchParams();
   // Submit handler conditionally sends either put or post req
   const onSubmit: SubmitHandler<InputType> = async (data) => {
+    console.log("entered function");
+    if (!data.ingredients || !data.instructions) {
+      console.log("No data for ingredients or instructions");
+      return; // Exit early if data is incomplete
+    }
     const recipeObject: RecipeType = {
       name: data.title,
       description: data.description,
@@ -83,21 +85,13 @@ function Form({
       ingredients: data.ingredients.map((e) => e.ingredient),
       instructions: data.instructions.map((e) => e.instruction),
     };
+    console.log("after", data);
 
     if (previewImage.length > 0) {
       recipeObject.img = previewImage;
     }
-    if (recipe !== undefined && setRecipe !== undefined) {
-      const returnedObject = await recipeService.update(
-        recipe._id!,
-        recipeObject
-      );
-      setRecipe(returnedObject);
-      setSearchParams("");
-    } else {
-      const returnedObject = await recipeService.create(recipeObject);
-      navigate(`/recipes/${returnedObject._id}`);
-    }
+    await props.onSubmit(recipeObject);
+    console.log("after after", data);
   };
 
   return (
@@ -110,7 +104,6 @@ function Form({
           {...register("title", { required: "This is required" })}
         />
         <InputError message={errors.title?.message} />
-        {/* <p>{}</p> */}
       </label>
 
       <label className="flex flex-col">
@@ -148,21 +141,24 @@ function Form({
           />
         </label>
         <InputError message={errors.servings?.message} />
-
-        {/* <p>{errors.servings?.message}</p> */}
       </div>
       <div className="flex flex-col">
         <div className="flex gap-2 items-center">
           <span className="flex items-center">Ingredients:</span>
           <RoundButton
             icon={faPlus}
-            handleClick={() => {
-              appendIngredients({ ingredient: "" });
+            onClick={() => {
+              ingredients.append(
+                { ingredient: "" },
+                {
+                  focusIndex: ingredients.fields.length,
+                }
+              );
             }}
           />
         </div>
         <ul className="flex flex-col">
-          {fieldsIngredients.map((field, index) => (
+          {ingredients.fields.map((field, index) => (
             <li key={field.id}>
               <div className="flex items-center">
                 <input
@@ -174,16 +170,14 @@ function Form({
                 />
                 <RoundButton
                   icon={faMinus}
-                  handleClick={() => {
-                    removeIngredients(index);
+                  onClick={() => {
+                    ingredients.remove(index);
                   }}
                 />
               </div>
               <InputError
                 message={errors.ingredients?.[index]?.ingredient?.message}
               />
-
-              {/* <p>{errors.ingredients?.[index]?.ingredient?.message}</p> */}
             </li>
           ))}
         </ul>
@@ -194,13 +188,16 @@ function Form({
           <span className="flex items-center">Directions:</span>
           <RoundButton
             icon={faPlus}
-            handleClick={() => {
-              appendInstructions({ instruction: "" });
+            onClick={() => {
+              instructions.append(
+                { instruction: "" },
+                { focusIndex: instructions.fields.length }
+              );
             }}
           />
         </div>
         <ul className="flex flex-col">
-          {fieldsInstructions.map((field, index) => (
+          {instructions.fields.map((field, index) => (
             <li key={field.id}>
               <div className="flex items-center">
                 <input
@@ -212,25 +209,29 @@ function Form({
                 />
                 <RoundButton
                   icon={faMinus}
-                  handleClick={() => {
-                    removeInstructions(index);
+                  onClick={() => {
+                    instructions.remove(index);
                   }}
                 />
               </div>
               <InputError
                 message={errors.instructions?.[index]?.instruction?.message}
               />
-              {/* <p>{errors.instructions?.[index]?.instruction?.message}</p> */}
             </li>
           ))}
         </ul>
       </div>
-
-      <button className="border" type="submit">
+      <Button
+        border="solid"
+        color="transparent"
+        height="24px"
+        radius="5px"
+        width="100%"
+        type="submit"
+        onClick={() => {}}
+      >
         Save
-      </button>
+      </Button>
     </form>
   );
 }
-
-export default Form;

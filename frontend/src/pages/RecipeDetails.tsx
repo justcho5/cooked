@@ -1,13 +1,12 @@
 import { useNavigate, useLoaderData, useSearchParams } from "react-router-dom";
-import recipeService from "../services/recipes";
+import { update, remove } from "../services/recipes";
 import { useState } from "react";
-import Button from "../components/Button";
-import Form from "../components/Form";
+import { Form } from "../components/Form";
+import { RectangleButton } from "../components/RectangleButton";
 
-function RecipeDetails() {
-  const [recipe, setRecipe] = useState<RecipeType>(
-    useLoaderData() as RecipeType
-  );
+export function RecipeDetails() {
+  const [recipe, setRecipe] = useState(useLoaderData() as RecipeType);
+  console.log(recipe);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const edit = searchParams.get("edit");
@@ -18,39 +17,51 @@ function RecipeDetails() {
   const navigate = useNavigate();
   const handleDeleteClick = async () => {
     if (recipe._id) {
-      await recipeService.remove(recipe._id);
+      await remove(recipe._id);
       navigate("/recipes");
     }
+  };
+
+  const onSubmit = async (recipeObject: RecipeType) => {
+    const returnedObject = await update(recipe._id!, recipeObject);
+    setRecipe(returnedObject);
+    setSearchParams("");
   };
 
   return recipe == undefined ? (
     <div>No Recipe</div>
   ) : edit === "true" ? ( // conditionally render form vs recipe view, (later - TODO: check if user is authorized)
-    <Form recipe={recipe} setRecipe={setRecipe} />
+    <Form recipe={recipe} onSubmit={onSubmit} />
   ) : (
     <div className="flex flex-col gap-5">
       <h1 className="text-xl">{recipe.name}</h1>
-      {recipe.description.length > 0 && <em>{recipe.description}</em>}
+      {recipe.description && <em>{recipe.description}</em>}
       <img className="w-44 h-44 object-cover" src={recipe.img} />
       <div className="text-lg">{recipe.servings} Servings</div>
       <div>
         <div className="text-lg">Ingredients:</div>
-        {recipe.ingredients.map((ingredient, idx) => (
-          <div key={idx}>{ingredient}</div>
-        ))}
+        <ul>
+          {recipe.ingredients.map((ingredient, idx) => (
+            <li className="list-disc list-inside" key={idx}>
+              {ingredient}
+            </li>
+          ))}
+        </ul>
       </div>
       <div>
         <div className="text-lg">Instructions:</div>
-        {recipe.instructions.map((instruction, idx) => (
-          <div key={idx}>{instruction}</div>
-        ))}
+        <ol>
+          {recipe.instructions.map((instruction, idx) => (
+            <li className="list-decimal list-inside" key={idx}>
+              {instruction}
+            </li>
+          ))}
+        </ol>
       </div>
       <div className="flex gap-3">
-        <Button text="Edit" onClick={handleEditClick} />
-        <Button text="Delete" onClick={handleDeleteClick} />
+        <RectangleButton text="Edit" onClick={handleEditClick} />
+        <RectangleButton text="Delete" onClick={handleDeleteClick} />
       </div>
     </div>
   );
 }
-
-export default RecipeDetails;

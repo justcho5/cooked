@@ -1,15 +1,41 @@
-function Button({
-  text,
+import React from "react";
+
+export interface Props {
+  border: string;
+  color: string;
+  children?: React.ReactNode;
+  height: string;
+  onClick: (data?: any) => void;
+  radius: string;
+  width: string;
+  type: "submit" | "reset" | "button" | undefined;
+}
+
+export function Button({
+  border,
+  color,
+  children,
+  height,
   onClick,
-}: {
-  text: string;
-  onClick: React.MouseEventHandler;
-}) {
+  radius,
+  width,
+  type,
+}: Props) {
   return (
-    <button className="border rounded-md" onClick={onClick}>
-      {text}
+    <button
+      className="flex items-center justify-center"
+      onClick={onClick}
+      style={{
+        backgroundColor: color,
+        border,
+        borderRadius: radius,
+        height,
+        width,
+        padding: "0 10px",
+      }}
+      type={type}
+    >
+      {children}
     </button>
   );
 }
-
-export default Button;

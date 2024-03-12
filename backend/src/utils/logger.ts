@@ -1,10 +1,8 @@
 // printing to console functions
-const info = (...params: string[]) => {
+export const logInfo = (...params: string[]) => {
   console.log(...params);
 };
 
-const error = (...params: string[]) => {
+export const logError = (...params: string[]) => {
   console.error(...params);
 };
-
-export default { info, error };

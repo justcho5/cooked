@@ -1,26 +1,24 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  //   IconLookup,
-  IconDefinition,
-  //   findIconDefinition,
-} from "@fortawesome/fontawesome-svg-core";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { Button } from "./Button";
 
-function RoundButton({
-  icon,
-  handleClick,
-}: {
+export interface Props {
   icon: IconDefinition;
-  handleClick: React.MouseEventHandler;
-}) {
-  return (
-    <button
-      className="rounded-full border w-5 h-5 flex items-center justify-center"
-      onClick={handleClick}
-    >
-      <FontAwesomeIcon icon={icon} />
-    </button>
-  );
+  onClick: () => void;
 }
 
-export default RoundButton;
+export function RoundButton({ icon, onClick }: Props) {
+  return (
+    <Button
+      border="solid"
+      color="transparent"
+      height="20px"
+      onClick={onClick}
+      radius="50%"
+      width="20px"
+      type="button"
+    >
+      <FontAwesomeIcon icon={icon} />
+    </Button>
+  );
+}
